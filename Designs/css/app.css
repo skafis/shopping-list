@@ -209,3 +209,54 @@ ul {
 
 
 /* end navigation bar */
+
+
+/* start shopping list section */
+
+#shopping-list {
+    width: auto;
+    height: auto;
+}
+
+.header {
+    text-align: center;
+    font-size: 4em;
+    font-weight: 700;
+    text-transform: capitalize;
+    font-style: oblique;
+    padding: 0.3em;
+    color: darkslategrey;
+}
+
+.callout {
+    padding: 0;
+    height: 20em;
+}
+
+.lead-name {
+    height: 3em;
+    background-color: aliceblue;
+    overflow: hidden;
+    text-align: center;
+}
+
+.lead-name h3 {
+    text-transform: capitalize;
+    font-size: 2em;
+    font-weight: 800;
+    color: darkgrey;
+}
+
+.callout ul {
+    padding: 1em;
+    text-align: center;
+}
+
+.callout li {
+    font-size: 1.2em;
+    padding: 0.2em 0;
+    text-transform: capitalize;
+}
+
+
+/* end shopping list section */
