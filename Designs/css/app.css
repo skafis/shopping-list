@@ -16,10 +16,6 @@ a {
     text-decoration: none;
 }
 
-ul {
-    list-style: none;
-}
-
 
 /* start the sign-up and sign-in section */
 
@@ -109,7 +105,11 @@ ul {
 
 .nav {
     background: #ffffff;
-    min-height: 50px;
+    min-height: 3.5em;
+}
+
+.nav ul {
+    list-style: none;
 }
 
 .nav .left {
@@ -119,7 +119,7 @@ ul {
 
 .nav .left li {
     border-bottom: 1px solid #f2f2f2;
-    font-size: 14px;
+    font-size: 1em;
     float: left;
 }
 
@@ -242,20 +242,54 @@ ul {
 
 .lead-name h3 {
     text-transform: capitalize;
-    font-size: 2em;
+    font-size: 2.2em;
     font-weight: 800;
     color: darkgrey;
 }
 
 .callout ul {
     padding: 1em;
-    text-align: center;
+    text-align: left;
 }
 
 .callout li {
-    font-size: 1.2em;
+    font-size: 1.3em;
     padding: 0.2em 0;
     text-transform: capitalize;
+}
+
+@media only screen and (max-width: 640px) {
+    .header {
+        font-size: 2.5em;
+        padding: 0.5em;
+    }
+    .callout {
+        margin: 1em;
+        height: auto;
+    }
+    .lead-name h3 {
+        font-size: 1.8em;
+    }
+    .callout li {
+        font-size: 1em;
+    }
+}
+
+@media only screen and (min-width: 641px) {
+    .header {
+        font-size: 3em;
+        padding: 0.5em;
+    }
+    .callout {
+        margin: 1em;
+        height: 17em;
+    }
+    .lead-name h3 {
+        font-size: 2em;
+    }
+    .callout li {
+        font-size: 1.1em;
+    }
 }
 
 
