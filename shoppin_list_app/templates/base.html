@@ -15,7 +15,7 @@
         <div class="nav-mobile">
             <ul class="left">
                 <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="{{ url_for('add_entry') }}"><i class="fa fa-book"></i> Add New </a></li>
+                <li><a href="#"><i class="fa fa-book"></i> Add New </a></li>
             </ul>
             <ul class="right">
                 {% if not session.logged_in %}
@@ -27,6 +27,7 @@
             
         </div>
     </nav>
+    <h1>welcome </h1>
     {% for message in get_flashed_messages() %}
               <div class=flash>{{ message }}</div>
             {% endfor %}

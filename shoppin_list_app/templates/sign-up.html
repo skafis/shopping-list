@@ -14,13 +14,18 @@
     <section class="row">
         <div class="login-box">
             <div class="row">
+                 <form role="form" action="" method="post" name="login"
+            class="form-signin">
                 <div class="login-box-form-section">
                     <h1 class="login-box-title">Sign up</h1>
-                    <input class="login-box-input" type="text" name="username" placeholder="Username" />
-                    <input class="login-box-input" type="email" name="email" placeholder="E-mail" />
-                    <input class="login-box-input" type="password" name="password" placeholder="Password" />
-                    <input class="login-box-input" type="password" name="password2" placeholder="Retype password" />
-                    <input class="login-box-submit-button" type="submit" name="signup_submit" value="Sign me up" /> </div>
+                    <input class="login-box-input" type="text" name="username" placeholder="Username" value="{{ request.form.username }}" required />
+                    <input class="login-box-input" type="email" name="email" placeholder="E-mail" value="{{ request.form.email }}" required />
+                    <input class="login-box-input" type="password" name="password" placeholder="Password" value="{{ request.form.password }}" required />
+                    <input class="login-box-input" type="password" name="password2" placeholder="Retype password" value="{{ request.form.password }}" required />
+                    <input class="login-box-submit-button" type="submit" name="signup_submit" value="Sign me up" /> 
+             
+                </div>
+            </form>
             </div>
         </div>
     </section>
