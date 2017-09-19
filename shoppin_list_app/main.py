@@ -193,6 +193,35 @@ def delete_shoping_list():
             return render_template('home.html')
     else:
         return render_template('home.html')
-    
+
+
+@app.route('/add-item', methods=['GET', 'POST'])
+# @login_required
+def add_item():
+    """Display entries list page."""
+    title = None
+    content = None
+    error = None
+
+    """For GET requests, display the registraion form. For POSTS, register the current user
+                by processing the form."""
+    if request.method == "POST":
+        title = request.form['title']
+        content = request.form['content']
+        list_id = request.form['list_id']
+        try:
+            shopping_list = ShoppingList.find_by_id(int(list_id))
+            item = Items(title, content, int(list_id))
+            shopping_list.add_item(item)
+            return redirect(url_for('show_items', id=[int(list_id)]))
+        except KeyError:
+            error = "No list found"
+            return render_template('add_items.html', error=error)
+    else:
+        list_id = request.args.get('id')
+        return render_template('add_items.html', list_id=list_id)
+
+
+
 if __name__ =='__main__':
     app.run( debug=True)
