@@ -1,47 +1,50 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
 <head>
-	<title>sign-up</title>
-</head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up-Shopping list</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.css">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/app.css') }}"> </head>
+
 <body>
-	<body>
-        <div class="container-fluid">
+    <section class="row">
+        <div class="login-box">
             <div class="row">
-                <div class="col-sm-6 col-md-4 col-md-offset-4">
-                    <h1 class="text-center login-title">Sign in to continue to Dreamchasers</h1>
+                <div class="login-box-form-section">
+                    <h1 class="login-box-title">Log in with you email account</h1>
                     {% if error %}
-                        <div class="alert alert-danger" style="width: 400px; margin-left: auto; margin-right: auto;" >
+                        <div class="alert" style="width: 400px; margin-left: auto; margin-right: auto;" >
                             <center>
                                 <p><strong>Error:</strong> {{ error }}
                             </center>
                         </div>
                     {% endif %}
-                    <div class="account-wall">
-                        <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
-                        alt="">
-                        <form class="form-signin" action="/login" method="POST" role="form" id="loginform">
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Email" name="email" id="email">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Password" name="password" id="password">
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-lg btn-primary btn-block" type="submit">
-                                Sign in</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="loader"
-                        style="position: fixed;
-                        width: auto;
-                        height: auto;
-                        background: url('/static/img/loader.gif') center center #efefef">
-                    </div>
-                    <a href="/create_account" class="text-center new-account">Create an account </a>
+                    <form>
+                        <label>Email
+                            <input type="email" placeholder="somebody@example.com"> </label>
+                        <label>Password
+                            <input type="password" placeholder="Password"> </label>
+                        <input id="show-password" type="checkbox">
+                        <label for="show-password">Show password</label>
+                        <p>
+                            <input class="login-box-submit-button" type="submit" class="button expanded" value="Log in"> </p>
+                        <p class="text-center"><a href="#">Forgot your password?</a></p>
+                    </form>
                 </div>
             </div>
         </div>
-    </body>
+    </section>
+    <script src="https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"></script>
+     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).foundation();
+        })
+    </script>
 </body>
+
 </html>

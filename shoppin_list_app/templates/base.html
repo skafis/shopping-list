@@ -14,10 +14,11 @@
     <nav class="nav"> <a class="toggle-nav" href="#">&#9776;</a>
         <div class="nav-mobile">
             <ul class="left">
-                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="#"><i class="fa fa-book"></i> Add New </a></li>
+                <li><a href="{{ url_for('home') }}"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('add_shopping_list') }}"><i class="fa fa-book"></i> Add New </a></li>
             </ul>
             <ul class="right">
+              <li> <a href="{{ url_for('create_account') }}"><i class="fa fa-user"></i> sign up</a> </li> 
                 {% if not session.logged_in %}
                 <li> <a href="{{ url_for('login') }}"><i class="fa fa-user"></i> log In</a> </li> 
                 {% else %}
@@ -32,27 +33,14 @@
               <div class=flash>{{ message }}</div>
             {% endfor %}
     {% block body %}{% endblock %}
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/foundation/6.2.4/foundation.min.js"></script>
-    <script type="text/javascript">
+    <script>
+        $(document).ready(function () {
+            $(document).foundation();
+        })
     </script>
 </body>
 
 </html>
 
-
-
-
-
-<!-- <div class=page>
-  <h1>Flaskr</h1>
-  <div class=metanav>
-    {% if not session.logged_in %}
-      <a href="{{ url_for('login') }}">log in</a>
-    {% else %}
-      <a href="{{ url_for('logout') }}">log out</a>
-    {% endif %}
-  </div>
-  {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-  {% endfor %}
-</div> -->

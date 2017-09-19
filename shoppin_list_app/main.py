@@ -31,6 +31,9 @@ def user_loader(user_id):
     """
     return User.query.get(user_id)
 
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 @app.route('/sign-up', methods=['POST','GET'])
 def create_account():
@@ -94,7 +97,7 @@ def login():
                 login_user(user, remember=True)
 
                 # redirect to the home page
-                return redirect(url_for('index'))
+                return redirect(url_for('home'))
             else:
                 error = 'You have entered invalid credentials'
                 return render_template('sign-in.html', error=error)
@@ -114,7 +117,7 @@ def logout():
     return render_template("logout.html")
 
 @app.route('/add-list', methods=['POST', 'GET'])
-@login_required
+# @login_required
 def add_shopping_list():
     title = None
     description = None
