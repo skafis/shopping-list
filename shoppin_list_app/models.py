@@ -72,3 +72,13 @@ class ShoppingList(object):
     @classmethod
     def delete_by_id(cls, id):
         del ShoppingList.id_index[id]
+        
+class Items(object):
+    id_generator = itertools.count(1)  # first generated is 1
+
+    def __init__(self, title, content, list_id):
+        self.id = next(self.id_generator)
+        self.title = title
+        self.content = content
+        self.status = False
+        self.list_id = list_id

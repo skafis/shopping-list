@@ -193,6 +193,91 @@ def delete_shoping_list():
             return render_template('home.html')
     else:
         return render_template('home.html')
-    
+
+
+@app.route('/add-item', methods=['GET', 'POST'])
+# @login_required
+def add_item():
+    """Display entries list page."""
+    title = None
+    content = None
+    error = None
+
+    """For GET requests, display the registraion form. For POSTS, register the current user
+                by processing the form."""
+    if request.method == "POST":
+        title = request.form['title']
+        content = request.form['content']
+        list_id = request.form['list_id']
+        try:
+            shopping_list = ShoppingList.find_by_id(int(list_id))
+            item = Items(title, content, int(list_id))
+            shopping_list.add_item(item)
+            return redirect(url_for('show_items', id=[int(list_id)]))
+        except KeyError:
+            error = "No list found"
+            return render_template('add_items.html', error=error)
+    else:
+        list_id = request.args.get('id')
+        return render_template('add_items.html', list_id=list_id)
+
+@app.route('/items')
+@login_required
+def show_items():
+    items = []
+    list_id = request.args.get('id')
+
+    try:
+        shopping_list = ShoppingList.find_by_id(int(list_id))
+        items = shopping_list.items
+    except KeyError:
+        items = []
+
+    return render_template('show_items.html', items=items, list_id=list_id)
+
+@app.route('/update-items', methods=['GET', 'POST'])
+@login_required
+def update_items():
+    """Display entries list page."""
+    title = None
+    content = None
+    error = None
+    item_id = None
+    list_id = None
+    item = None
+
+    item_id = request.args.get('item_id')
+    list_id = request.args.get('list_id')
+
+    """For GET requests, display the registraion form. For POSTS, register the current user
+                by processing the form."""
+    if request.method == "POST":
+        title = request.form['title']
+        content = request.form['content']
+        item_id = request.form['item_id']
+        list_id = request.form['list_id']
+        try:
+            shopping_list = ShoppingList.find_by_id(int(list_id))
+            items = shopping_list.items
+
+            for e in items:
+                if e.id == int(item_id):
+                    e.title = title
+                    e.content = content
+                    break
+            shopping_list.items = items
+
+            return redirect(url_for('entry_detail', entry_id=[int(entry_id)], list_id=[int(list_id)]))
+        except KeyError:
+            error = "No item found"
+            return render_template('item-update.html', error=error)
+    else:
+        shopping_list = ShoppingList.find_by_id(int(list_id))
+        items = shopping_list.items
+        for e in items:
+            if e.id == int(item_id):
+                item = e
+        return render_template('entry_update.html', item=item)
+
 if __name__ =='__main__':
     app.run( debug=True)
