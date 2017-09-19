@@ -113,7 +113,7 @@ def logout():
     logout_user()
     return render_template("logout.html")
 
-@app.route('/add_list', methods=['POST', 'GET'])
+@app.route('/add-list', methods=['POST', 'GET'])
 @login_required
 def add_shopping_list():
     title = None
@@ -131,13 +131,47 @@ def add_shopping_list():
             u = User.find_by_email(user.email)
             shopping_list = ShoppingList(title, description)
             shopping_list.add_user(u)
-            u.add_shopping_list(bucket_list)
+            u.add_shopping_list(shopping_list)
             return redirect(url_for('home'))
         except KeyError:
             error = "No user found"
             return render_template('add_shopping_list.html', error=error)
     else:
         return render_template('add_shopping_list.html', error=error)
+
+@app.route('/update-list', methods=['POST', 'GET'])
+@login_required
+def update_shopping_list():
+    title = None
+    description = None
+    error = None
+    user = current_user
+    list_id = request.args.get('id')
+    shopping_list = None
+
+    """For GET requests, display the registraion form. For POSTS, register the current user
+            by processing the form."""
+    if request.method == "POST":
+        title = request.form['title']
+        description = request.form['description']
+        id = request.form['id']
+        try:
+            u = User.find_by_email(user.email)
+            for b in u.shopping_list:
+                if b.id == int(id):
+                    b.title = title
+                    b.description = description
+            return redirect(url_for('home'))
+        except KeyError:
+            error = "No user found"
+            return render_template('home.html')
+    else:
+        u = User.find_by_email(user.email)
+        shopping_list = u.shopping_list
+        for b in shopping_list:
+            if b.id == int(list_id):
+                shopping_list = b
+        return render_template('update-list.html', shopping_list=shopping_list)
     
 if __name__ =='__main__':
     app.run( debug=True)
