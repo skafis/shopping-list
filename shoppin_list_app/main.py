@@ -172,6 +172,27 @@ def update_shopping_list():
             if b.id == int(list_id):
                 shopping_list = b
         return render_template('update-list.html', shopping_list=shopping_list)
+
+@app.route('/list-delete', methods=['POST', 'GET'])
+def delete_shoping_list():
+    id = None
+    user = current_user
+
+    """For GET requests, display the login form. For POSTS, login the current user
+        by processing the form."""
+    if request.method == "POST":
+        id = request.form['id']
+        u = User.find_by_email(user.email)
+        try:
+            for i, b in enumerate(u.shopping_list):
+                if b.id == int(id):
+                    del u.shopping_list[i]
+                    break
+            return redirect(url_for('home'))
+        except:
+            return render_template('home.html')
+    else:
+        return render_template('home.html')
     
 if __name__ =='__main__':
     app.run( debug=True)
