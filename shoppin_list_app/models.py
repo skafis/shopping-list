@@ -17,6 +17,7 @@ class User(object):
         self.user_password = self.set_password(user_password)
         self.authenticated = False
         User.email_index[email]= self
+        self.shopping_list = []
 
     @classmethod
     def find_by_email(cls, email):
@@ -45,3 +46,29 @@ class User(object):
         return False
 
 
+class ShoppingList(object):
+    id_index = dict()
+    id_generator = itertools.count(1)  # first generated is 1
+
+    def __init__(self, title, description):
+        self.id = next(self.id_generator)
+        self.title = title
+        self.description = description
+        self.created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        ShoppingList.id_index[self.id] = self
+        self.users = []
+        self.items = []
+
+    def add_user(self, user):
+        self.users.append(user)
+
+    def add_items(self, entry):
+        self.items.append(items)
+
+    @classmethod
+    def find_by_id(cls, id):
+        return ShoppingList.id_index[id]
+
+    @classmethod
+    def delete_by_id(cls, id):
+        del ShoppingList.id_index[id]

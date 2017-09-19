@@ -112,6 +112,32 @@ def logout():
     user.authenticated = False
     logout_user()
     return render_template("logout.html")
+
+@app.route('/add_list', methods=['POST', 'GET'])
+@login_required
+def add_shopping_list():
+    title = None
+    description = None
+    error = None
+    user = current_user
+
+    """For GET requests, display the registraion form. For POSTS, register the current user
+            by processing the form."""
+    if request.method == "POST":
+        title = request.form['title']
+        description = request.form['description']
+
+        try:
+            u = User.find_by_email(user.email)
+            shopping_list = ShoppingList(title, description)
+            shopping_list.add_user(u)
+            u.add_shopping_list(bucket_list)
+            return redirect(url_for('home'))
+        except KeyError:
+            error = "No user found"
+            return render_template('add_shopping_list.html', error=error)
+    else:
+        return render_template('add_shopping_list.html', error=error)
     
 if __name__ =='__main__':
     app.run( debug=True)
