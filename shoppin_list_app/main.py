@@ -5,7 +5,8 @@ from flask import (
     session,
     request,
     url_for,
-    flash)
+    flash,
+    current_app)
 from flask.ext.login import LoginManager
 from flask.ext.login import (
     login_user,
@@ -13,7 +14,7 @@ from flask.ext.login import (
     current_user, 
     login_required)
 
-from models import User
+from models import User, ShoppingList, Items
 
 
 
@@ -33,11 +34,13 @@ def user_loader(user_id):
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    user = current_user
+    return render_template('home.html', username=user)
 
 @app.route('/sign-up', methods=['POST','GET'])
 def create_account():
-    print(User.email_index.keys())
+    print (User)
+    # print vars(User)
     user_name = None
     email = None
     user_password = None
@@ -48,27 +51,23 @@ def create_account():
     POST request registers the current user
     """
 
-    # if request.method == 'GET':
-    #     return render_template('sign-up.html')
-    # user = User(request.form['username'] , request.form['password'],request.form['email'])
-    # # session[username] = request.form['username']
-    # # session.commit()
-    # flash('User successfully registered')
-    # return redirect(url_for('login'))
     if request.method == "POST":
         user_name = request.form['username']
         user_password = request.form['password']
         email = request.form['email']
+
+
 
         if email in User.email_index:
             flash('User with the email already exists')
             return render_template('sign-up.html', error=error)
         else:
             user = User(user_name, user_password, email)
-            k = User.email_index[email] = user_name
-            print(k)
+            name = session['username'] = user_name
+            password = session['password'] = user_password
+
             # redirect to the login page
-            return redirect(url_for('login'))
+            return redirect(url_for('home'))
     else:
         return render_template('sign-up.html', error=error)
 
@@ -128,13 +127,14 @@ def add_shopping_list():
             by processing the form."""
     if request.method == "POST":
         title = request.form['title']
-        description = request.form['description']
 
         try:
-            u = User.find_by_email(user.email)
+            # u = User.find_by_email(user.email)
+            # print(u)
             shopping_list = ShoppingList(title, description)
-            shopping_list.add_user(u)
-            u.add_shopping_list(shopping_list)
+            print vars(shopping_list)
+            # shopping_list.add_user(u)
+            # u.add_shopping_list(shopping_list)
             return redirect(url_for('home'))
         except KeyError:
             error = "No user found"

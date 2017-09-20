@@ -53,17 +53,27 @@ class ShoppingList(object):
     def __init__(self, title, description):
         self.id = next(self.id_generator)
         self.title = title
-        self.description = description
-        self.created_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         ShoppingList.id_index[self.id] = self
         self.users = []
         self.items = []
+        self.shopping_list = {}
+        self.last_list_id = 0
 
     def add_user(self, user):
         self.users.append(user)
 
-    def add_items(self, entry):
+    def add_items(self, items):
         self.items.append(items)
+
+    def get_list(self):
+        return self.shopping_list
+
+    def add_list(self, slitst):
+        self.last_list_id += 1
+        self.shopping_list[self.last_list_id] = slitst
+        slitst._id = self.last_list_id
+
+
 
     @classmethod
     def find_by_id(cls, id):
