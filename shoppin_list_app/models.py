@@ -1,4 +1,7 @@
 from flask import Flask
+
+from flask.ext.login import LoginManager,  UserMixin
+
 from flask_bcrypt import Bcrypt
 from collections import defaultdict
 from datetime import datetime
@@ -8,16 +11,27 @@ app = Flask(__name__)
 app.secret_key = 'asdfzxcvqwer'
 bcrypt = Bcrypt(app)
 
-class User(object):
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def user_loader(user_id):
+    """Given *user_id*, return the associated User object.
+
+    :param unicode user_id: user_id (email) user to retrieve
+    """
+    return User.query.get(user_id)
+
+class User(UserMixin):
     email_index = dict()
 
     def __init__(self, user_name, email, user_password):
         self.user_name = user_name
         self.email = email
         self.user_password = self.set_password(user_password)
-        self.authenticated = False
+        # self.is_active = True
         User.email_index[email]= self
-        self.shopping_list = []
+        self.shopping_list = {}
 
     @classmethod
     def find_by_email(cls, email):
@@ -26,20 +40,22 @@ class User(object):
     def set_password(self, password):
         return bcrypt.generate_password_hash(password)
 
-    def is_active(self):
-        # make all user active
-        return True
+    # def is_active(self):
+    #     # make all user active
+    #     return True
+
+    def is_authenticated(self):
+        """Return True if the user is authenticated."""
+        return self.authenticated
+
 
     def get_id(self):
         # return email adress for flask login
         return self.email
 
-    def is_authenticated(self):
-        return self.authenticated
-
     def check_password(self, hashed_password, password):
         # return true or false
-        return bcrypt.check_password_hash(hashed_password, password)
+        return bcrypt.check_password_hash(hashed_password, user_password)
 
     def is_anonymous(self):
         # Dont support anonymus users
@@ -64,17 +80,19 @@ class ShoppingList(object):
     def add_items(self, items):
         self.items.append(items)
 
-    def get_list(self):
-        return self.shopping_list
+    # def get_list(self):
+    #     return self.shopping_list
 
         
-    @staticmethod
+    # @staticmethod
     def get_all():
-        return ShoppingList.query.all()
+        return self.shopping_list
+        # return ShoppingList.query.all()
 
     
     def add_list(self, title):
-        self.shopping_list['title'] = title
+        self.shopping_list[self.id] = title
+        
 
 
 

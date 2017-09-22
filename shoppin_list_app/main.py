@@ -15,6 +15,8 @@ from flask.ext.login import (
     login_required)
 
 from models import User, ShoppingList, Items
+from flask import current_app
+
 
 
 
@@ -35,12 +37,14 @@ def user_loader(user_id):
 @app.route('/')
 def home():
     user = current_user
-    return render_template('home.html', username=user)
+    ls = ShoppingList.get_all
+    
+    print vars(ls)
+
+    return render_template('home.html', user=user)
 
 @app.route('/sign-up', methods=['POST','GET'])
 def create_account():
-    print (User)
-    # print vars(User)
     user_name = None
     email = None
     user_password = None
@@ -63,6 +67,8 @@ def create_account():
             return render_template('sign-up.html', error=error)
         else:
             user = User(user_name, user_password, email)
+            user.email_index[email] = email
+            print (user.email_index.values())
             name = session['username'] = user_name
             password = session['password'] = user_password
 
@@ -87,7 +93,7 @@ def login():
 
         try:
             user = User.find_by_email(email)
-            print user
+
             if user.check_password(user.user_password, password):
                 user.authenticated = True
 
@@ -122,6 +128,7 @@ def add_shopping_list():
     error = None
     user = current_user
 
+
     """For GET requests, display the registraion form. For POSTS, register the current user
             by processing the form."""
     if request.method == "POST":
@@ -131,8 +138,10 @@ def add_shopping_list():
             # u = User.find_by_email(user.email)
             # print(u)
             shopping_list = ShoppingList(title)
-            shopping_list.add_list(title)
-            
+            shopping_list.shopping_list[id] =title
+            # shopping_list.add_list(title)
+            # print vars(ShoppingList.get_all)
+            print vars(shopping_list)
             # shopping_list.add_user(u)
             # u.add_shopping_list(shopping_list)
             return redirect(url_for('home'))
@@ -156,7 +165,6 @@ def update_shopping_list():
             by processing the form."""
     if request.method == "POST":
         title = request.form['title']
-        description = request.form['description']
         id = request.form['id']
         try:
             u = User.find_by_email(user.email)
