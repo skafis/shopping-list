@@ -1,3 +1,4 @@
+[![Coverage Status](https://coveralls.io/repos/github/skafis/shopping-list/badge.svg?branch=master)](https://coveralls.io/github/skafis/shopping-list?branch=master)
 # README #
 * The shopping list app is an application that allows users to record and share things they want to spend money
   on meeting the needs of keeping track of their shopping lists.

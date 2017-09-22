@@ -50,14 +50,13 @@ class ShoppingList(object):
     id_index = dict()
     id_generator = itertools.count(1)  # first generated is 1
 
-    def __init__(self, title, description):
+    def __init__(self, title):
         self.id = next(self.id_generator)
         self.title = title
         ShoppingList.id_index[self.id] = self
         self.users = []
         self.items = []
         self.shopping_list = {}
-        self.last_list_id = 0
 
     def add_user(self, user):
         self.users.append(user)
@@ -68,10 +67,14 @@ class ShoppingList(object):
     def get_list(self):
         return self.shopping_list
 
-    def add_list(self, slitst):
-        self.last_list_id += 1
-        self.shopping_list[self.last_list_id] = slitst
-        slitst._id = self.last_list_id
+        
+    @staticmethod
+    def get_all():
+        return ShoppingList.query.all()
+
+    
+    def add_list(self, title):
+        self.shopping_list['title'] = title
 
 
 

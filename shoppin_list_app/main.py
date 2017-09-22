@@ -119,7 +119,6 @@ def logout():
 # @login_required
 def add_shopping_list():
     title = None
-    description = None
     error = None
     user = current_user
 
@@ -131,8 +130,9 @@ def add_shopping_list():
         try:
             # u = User.find_by_email(user.email)
             # print(u)
-            shopping_list = ShoppingList(title, description)
-            print vars(shopping_list)
+            shopping_list = ShoppingList(title)
+            shopping_list.add_list(title)
+            
             # shopping_list.add_user(u)
             # u.add_shopping_list(shopping_list)
             return redirect(url_for('home'))
