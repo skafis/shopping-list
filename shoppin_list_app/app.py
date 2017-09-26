@@ -15,12 +15,6 @@ from datetime import datetime
 site = Blueprint('site', __name__)
 
 
-@site.route('/shop')
-def product():
-    now = datetime.now()
-    day = now.strftime('%A')
-    return render_template('home.html', day_name=day)
-
 
 @site.route('/')
 def home_page():
@@ -40,19 +34,11 @@ def product_page(slist_id):
 
         slist = current_app.store.get_slist(slist_id)
 
-        return render_template('home.html', slist=slist)
-
-    else:
-		slist_ids = request.form.getlist('slist_ids')
-
-		for slist_id in slist_ids:
-
-			current_app.store.delete_slist(int(slist_id))
-
-		flash('%d movies deleted.' % len(slist_ids))
+        return render_template('shop_list_detail.html', slist=slist)
 
     return redirect(url_for('site.product_page'))
 
+# add shopping list method
 @site.route('/shop/add', methods=['GET', 'POST'])
 def slist_add_page():
     '''
@@ -63,17 +49,17 @@ def slist_add_page():
         form = {'title': ''}
 
     else:
-        # validat the data in the forms
+        # validate the data in the forms
         valid = validate_data(request.form)
 
         if valid:
             title = request.form.data['title']
-            # add to class
+            # assign a variable to class instance
             slist = ShoppingList(title)
-
+            # add the instance to the dictonary
             current_app.store.add_slist(slist)
 
-            return redirect(url_for('site.home_page'))
+            return redirect(url_for('site.product_page', slist_id=slist._id))
 
         form = request.form
     return render_template('add_shopping_list.html', form=form)
@@ -81,32 +67,44 @@ def slist_add_page():
 @site.route('/shop/<int:slist_id>/edit', methods=['GET', 'POST'])
 # @login_required
 def slist_edit_page(slist_id):
-
+    # fetch the value of the id provided
     slist = current_app.store.get_slist(slist_id)
 
     if request.method == 'GET':
 
+        # assign the form the current value
         form = {'title': slist.title}
 
-        return render_template('add_shopping_list.html.html', form=form )
+        return render_template('add_shopping_list.html', form=form )
 
     else:
-
+        # get the value in the form
         slist.title = request.form['title']
 
-        current_app.store.update_movie(slist)
+        # add the value to the dictonary
+        current_app.store.update_slist(slist)
+
         flash('list  data updated.')
+
         return redirect(url_for('site.product_page', slist_id=slist._id))
 
+@site.route('/shop/<int:slist_id>/del', methods=['GET'])
+def slist_delete_page(slist_id):
+    
+    # delete the value in the dictonary of the id provided
+    current_app.store.delete_slist(int(slist_id))
+    flash ("list deleted")
+    return redirect(url_for('site.home_page')) 
 
 @site.route('/login', methods=['GET', 'POST'])
 def login_page():
 
-    form = LoginForm()
+    form = LoginForm(request.form)
 
     if form.validate_on_submit():
 
-        username = form.data['username']
+        username = form.username.data
+        print(username)
 
         user = get_user(username)
 
@@ -147,5 +145,6 @@ def validate_data(form):
         form.errors['title'] = 'Title can not be blank.'
     else:
         form.data['title'] = form['title']
+
 
     return len(form.errors) == 0

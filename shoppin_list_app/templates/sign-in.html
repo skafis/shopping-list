@@ -23,10 +23,11 @@
                         </div>
                     {% endif %}
                     <form role="form" action="" method="post" name="login">
-                        <label>username
-                            <input type="text" placeholder="somebody@example.com" name="email"> </label>
+                        <label>Email
+                             {{ form.username }}</label>
                         <label>Password
-                            <input type="password" placeholder="Password" name="password"> </label>
+                            {{ form.password }}
+                            </label>
                         <input id="show-password" type="checkbox">
                         <label for="show-password">Show password</label>
                         <p>

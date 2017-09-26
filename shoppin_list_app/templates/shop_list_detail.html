@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block body %}
+	<div class="page-header">
+		<h1>{{ slist.title }}</h1>
+	</div>
+	<div class="large-up-4">
+		<a href="{{ request.path }}/edit" class="button">Edit</a>
+	</div>
+	<div class="large-up-4">
+		<a href="{{ request.path }}/del" class="button">delete</a>
+	</div>
+{% endblock %}

@@ -6,6 +6,7 @@ class Store:
     def add_slist(self, slist):
         self.last_slist_id += 1
         self.shopping_list[self.last_slist_id] = slist
+        print(type(slist))
         slist._id = self.last_slist_id
 
     def update_slist(self, slist):

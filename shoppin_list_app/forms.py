@@ -15,14 +15,17 @@ class ShoppingListEditForm(FlaskForm):
         ]
     )
 
-    year = IntegerField(
-        'Year',
-        validators=[
-            Optional(),
-            NumberRange(min=1887, max=datetime.now().year)
-        ]
-    )
 
 class LoginForm(FlaskForm):
-	username = StringField()
-	password = PasswordField()
+	username = StringField(
+        'username', 
+        validators=[
+                DataRequired()
+            ]
+        )
+	password = PasswordField(
+        'password',
+            validators=[
+                DataRequired()
+            ]
+        )
