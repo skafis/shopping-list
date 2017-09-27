@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block body %}
+
+    <section id="shopping-list">
+        
+        
+        <h1 class="header">Shopping List</h1>
+        <div class="row">
+            {% if shop_lists %}
+            <div class="row small-up-1 medium-up-2 large-up-3">
+                {% for slist_id, items in shop_lists %}
+                <div class="column">
+                    <div class="callout">
+                        <div class="lead-name">
+                            <h3><a href="{{ url_for('site.product_page', slist_id=slist_id) }}">{{ items.title }}</a></h3> </div>
+                        <ul>
+                            <li>Skinless chicken or turkey breasts</li>
+                            <li>Ground turkey or chicken</li>
+                            <li>Salmon, halibut, trout</li>
+                            <li>Reduced-sodium lunchmeat (turkey, roast beef)</li>
+                            <li>Skinless chicken or turkey breasts</li>
+                        </ul>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <h3> There are no items, please add to view</h3>
+        {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endblock %}
