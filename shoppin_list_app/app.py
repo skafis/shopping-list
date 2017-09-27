@@ -1,30 +1,21 @@
 from flask import Blueprint, redirect, render_template, url_for, flash
 from flask import current_app, request
-from flask_login import LoginManager, login_user
+from flask_login import login_user
 from passlib.apps import custom_app_context as pwd_context
-
-
 from models import ShoppingList
-from forms import LoginForm
-
-from users import get_user
-
-from datetime import datetime
-
-
+from forms import LoginForm, SignUpForm
+from users import User
 site = Blueprint('site', __name__)
 
 
 
 @site.route('/')
 def home_page():
-    # list every item on the dictonary
+    '''list every item on the dictonary'''
     shop_lists = current_app.store.get_all_slist()
-
-    print(shop_lists.items())
     return render_template('home.html', shop_lists=sorted(shop_lists.items()))
 
-@site.route('/shop/<int:slist_id>')
+@site.route('/app/<int:slist_id>')
 def product_page(slist_id):
     '''
     if request is GET show list detail
@@ -38,7 +29,7 @@ def product_page(slist_id):
     return redirect(url_for('site.product_page'))
 
 # add shopping list method
-@site.route('/shop/add', methods=['GET', 'POST'])
+@site.route('/app/add', methods=['GET', 'POST'])
 def slist_add_page():
     '''
     The get method will create a new form
@@ -58,23 +49,24 @@ def slist_add_page():
             # add the instance to the dictonary
             current_app.store.add_slist(slist)
 
-            return redirect(url_for('site.product_page', slist_id=slist._id))
+            return redirect(url_for('site.product_page', slist_id = slist._id))
 
         form = request.form
     return render_template('add_shopping_list.html', form=form)
 
-@site.route('/shop/<int:slist_id>/edit', methods=['GET', 'POST'])
+@site.route('/app/<int:slist_id>/edit', methods=['GET', 'POST'])
 # @login_required
 def slist_edit_page(slist_id):
-    # fetch the value of the id provided
+    '''get the id of the list and load it i a form to update it'''
+
+    #fetch the value of the id provided
     slist = current_app.store.get_slist(slist_id)
 
     if request.method == 'GET':
 
         # assign the form the current value
         form = {'title': slist.title}
-
-        return render_template('add_shopping_list.html', form=form )
+        return render_template('add_shopping_list.html', form=form)
 
     else:
         # get the value in the form
@@ -95,6 +87,35 @@ def slist_delete_page(slist_id):
     flash ("list deleted")
     return redirect(url_for('site.home_page')) 
 
+@site.route('/signup', methods=['GET', 'POST'])
+def create_account():
+    """
+    GET request displays sign-up form. 
+    POST request registers the current user
+    """
+    form = SignUpForm(request.form)
+    if request.method == 'POST' and form.validate():
+        user = User(form.username.data, form.password.data)
+
+        session['user'] = user
+        flash('Thanks for registering')
+        return redirect(url_for('login'))
+    return render_template('sign-up.html', form=form)
+
+        # if email in User.email_index:
+        #     flash('User with the email already exists')
+        #     return render_template('sign-up.html', error=error)
+        # else:
+        #     user = User(user_name, user_password, email)
+        #     user.email_index[email] = email
+        #     print (user.email_index.values())
+        #     name = session['username'] = user_name
+        #     password = session['password'] = user_password
+
+            # redirect to the login page
+    #         return redirect(url_for('home'))
+    # else:
+    #     return render_template('sign-up.html', error=error)
 
 @site.route('/login', methods=['GET', 'POST'])
 def login_page():
@@ -105,7 +126,7 @@ def login_page():
 
         username = form.username.data
 
-        user = get_user(username)
+        user = User()
 
         if user is not None:
 
@@ -127,7 +148,7 @@ def login_page():
 @site.route('/logout')
 def logout_page():
 
-    logout_user()
+    # logout_user()
 
     flash('You have logged out.')
 

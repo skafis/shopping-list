@@ -3,7 +3,7 @@ from flask_login import UserMixin
 
 
 class User(UserMixin):
-    def __init__(self, username, password):
+    def __init__(self, username=None, password=None):
         self.accounts_db = {}
         self.username = username
         self.password = password
@@ -17,10 +17,12 @@ class User(UserMixin):
     def is_active(self):
         return self.active
 
+    
     def create_accounts(self, username, password):
-        self.accounts_db['username'] = password
+        self.accounts_db[username] = password
+        print (self.accounts_db.keys())
         return self
-
+        
     def check_user(self, username):
         if username in self.accounts_db.keys():
             return True
@@ -28,7 +30,7 @@ class User(UserMixin):
             return False
 
     def verify_password(self, username, password):
-        if accounts_db['username'] == password:
+        if self.accounts_db[username] == password:
             return True
         else:False
 
