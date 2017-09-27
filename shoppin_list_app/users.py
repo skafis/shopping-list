@@ -4,6 +4,7 @@ from flask_login import UserMixin
 
 class User(UserMixin):
     def __init__(self, username, password):
+        self.accounts_db = {}
         self.username = username
         self.password = password
         self.active = True
@@ -15,6 +16,29 @@ class User(UserMixin):
     @property
     def is_active(self):
         return self.active
+
+    def create_accounts(self, username, password):
+        self.accounts_db['username'] = password
+        return self
+
+    def check_user(self, username):
+        if username in self.accounts_db.keys():
+            return True
+        else:
+            return False
+
+    def verify_password(self, username, password):
+        if accounts_db['username'] == password:
+            return True
+        else:False
+
+    def is_authenticated(self):
+        """Return True if the user is authenticated."""
+        return self.authenticated
+
+    
+
+
 
 
 def get_user(user_id):

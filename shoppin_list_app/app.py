@@ -28,7 +28,6 @@ def home_page():
 def product_page(slist_id):
     '''
     if request is GET show list detail
-    else get the list is and delete
     '''
     if request.method == 'GET':
 
@@ -96,6 +95,7 @@ def slist_delete_page(slist_id):
     flash ("list deleted")
     return redirect(url_for('site.home_page')) 
 
+
 @site.route('/login', methods=['GET', 'POST'])
 def login_page():
 
@@ -104,14 +104,12 @@ def login_page():
     if form.validate_on_submit():
 
         username = form.username.data
-        print(username)
 
         user = get_user(username)
 
         if user is not None:
 
             password = form.data['password']
-
             if pwd_context.verify(password, user.password):
 
                 login_user(user)

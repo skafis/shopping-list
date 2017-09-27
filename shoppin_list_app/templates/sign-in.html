@@ -23,6 +23,7 @@
                         </div>
                     {% endif %}
                     <form role="form" action="" method="post" name="login">
+                        {{ form.csrf_token }}
                         <label>Email
                              {{ form.username }}</label>
                         <label>Password

@@ -12,12 +12,13 @@
                 <div class="column">
                     <div class="callout">
                         <div class="lead-name">
-                            <h3>{{ items.title }}</h3> </div>
+                            <h3><a href="{{ url_for('site.product_page', slist_id=slist_id) }}">{{ items.title }}</a></h3> </div>
                         <ul>
                             <li>Skinless chicken or turkey breasts</li>
                             <li>Ground turkey or chicken</li>
                             <li>Salmon, halibut, trout</li>
                             <li>Reduced-sodium lunchmeat (turkey, roast beef)</li>
+                            <li>Skinless chicken or turkey breasts</li>
                         </ul>
                     </div>
                 </div>
