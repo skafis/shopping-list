@@ -14,19 +14,21 @@
     <section class="row">
         <div class="login-box">
             <div class="row">
-                 <form role="form" action="" method="post" name="login"
-            class="form-signin">
-            {{ form.csrf_token }}
+                 <form role="form" action="" method="post" name="" class="form-signin">
+                    
                 <div class="login-box-form-section">
                     <h1 class="login-box-title">Sign up</h1>
-                    <label>username</label>
-                    {{ form.username }}
-                    <label>Email</label>
-                    {{ form.email }}
-                    <label>UserName</label>
-                    {{ form.password }}
-                    <label>Confirm Password</label>
-                    {{ form.password }}
+                        {{ form.csrf_token }}
+                        <label>username
+                            {{ form.username }}</label>
+                        <label>Password
+                            {{form.email }}
+                            </label>
+                        <label>Password
+                            {{ form.password }}
+                            </label>
+                            {{ form.confirm }}
+                    </form>
                     <input class="login-box-submit-button" type="submit" name="signup_submit" value="Sign me up" /> 
              
                 </div>

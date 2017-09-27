@@ -7,24 +7,25 @@ list and also items to their shopping list.
 
 pre requisites you need to do
 * clone this repo, Go to your terminal and type
-  git clone https://github.com/skafis/shopping-list.git 
+  ```git clone https://github.com/skafis/shopping-list.git```
 
 * Go to the folder by typing 
-  cd shopping-list/shoppin_list_app
+  ```$ cd shopping-list/shoppin_list_app```
 
 * This is where the flask files are located
-  first step **install the virtalenviroment**
+  * first step **install the virtalenviroment**
+    ``` virtualenv venv```
 
   Then install the requirements by typing in the 
-  terminal *pip install -r requirements.txt*
+  terminal ```$ pip install -r requirements.txt```
 
 * now you have all the packages needed to successfuly run flask
 
 * in your terminal run
-  $ export FLASK_APP=main.py
+  ```$ export FLASK_APP=main.py```
 
   and then 
 
-  flask run
+  ```flask run```
 
 you are all now set up

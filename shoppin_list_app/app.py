@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template, url_for, flash
-from flask import current_app, request
+from flask import current_app, request, session
 from flask_login import login_user
 from passlib.apps import custom_app_context as pwd_context
 from models import ShoppingList
@@ -49,7 +49,7 @@ def slist_add_page():
             # add the instance to the dictonary
             current_app.store.add_slist(slist)
 
-            return redirect(url_for('site.product_page', slist_id = slist._id))
+            return redirect(url_for('site.product_page', slist_id=slist._id))
 
         form = request.form
     return render_template('add_shopping_list.html', form=form)
@@ -79,7 +79,7 @@ def slist_edit_page(slist_id):
 
         return redirect(url_for('site.product_page', slist_id=slist._id))
 
-@site.route('/shop/<int:slist_id>/del', methods=['GET'])
+@site.route('/app/<int:slist_id>/del', methods=['GET'])
 def slist_delete_page(slist_id):
     
     # delete the value in the dictonary of the id provided
@@ -90,56 +90,37 @@ def slist_delete_page(slist_id):
 @site.route('/signup', methods=['GET', 'POST'])
 def create_account():
     """
-    GET request displays sign-up form. 
-    POST request registers the current user
+    GET request displays sign-up form. POST request registers the current user
     """
     form = SignUpForm(request.form)
-    if request.method == 'POST' and form.validate():
+    
+    if form.validate_on_submit():
         user = User(form.username.data, form.password.data)
 
-        session['user'] = user
+        user.create_accounts(form.username.data,form.password.data)
+        session['user'] = form.username.data
         flash('Thanks for registering')
-        return redirect(url_for('login'))
+        return redirect(url_for('site.login_page'))
     return render_template('sign-up.html', form=form)
-
-        # if email in User.email_index:
-        #     flash('User with the email already exists')
-        #     return render_template('sign-up.html', error=error)
-        # else:
-        #     user = User(user_name, user_password, email)
-        #     user.email_index[email] = email
-        #     print (user.email_index.values())
-        #     name = session['username'] = user_name
-        #     password = session['password'] = user_password
-
-            # redirect to the login page
-    #         return redirect(url_for('home'))
-    # else:
-    #     return render_template('sign-up.html', error=error)
 
 @site.route('/login', methods=['GET', 'POST'])
 def login_page():
 
     form = LoginForm(request.form)
-
+   
     if form.validate_on_submit():
 
-        username = form.username.data
+        user = form.username.data
+        pas = form.password.data
+        add_= User()
+        add_.check_user(user, pas)
+        login_user(user)
 
-        user = User()
+        flash('You have logged in.')
 
-        if user is not None:
+        next_page = request.args.get('next', url_for('site.home_page'))
 
-            password = form.data['password']
-            if pwd_context.verify(password, user.password):
-
-                login_user(user)
-
-                flash('You have logged in.')
-
-                next_page = request.args.get('next', url_for('site.home_page'))
-
-                return redirect(next_page)
+        return redirect(next_page)
 
         flash('Invalid credentials.')
 

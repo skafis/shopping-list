@@ -25,9 +25,7 @@ class SignUpForm(FlaskForm):
     '''
     username = StringField('username', validators=[DataRequired()])
     email = StringField('email', validators=[DataRequired()])
-    password = PasswordField('New password', [
-            validators.DataRequired(),
-            validators.EqualTo('confirm', message='Password must match')
-        ])
+    password = PasswordField('New password', [validators.DataRequired(),
+            validators.EqualTo('confirm', message='Password must match')])
     confirm = PasswordField('Repeat Password')
-    accept_tos = BooleanField('I accept the TOS', [validators.DataRequired()])
+    # accept_tos = BooleanField('I accept the TOS', [validators.DataRequired()])
