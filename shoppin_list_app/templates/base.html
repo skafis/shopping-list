@@ -18,11 +18,13 @@
                 <li><a href="{{ url_for('site.slist_add_page') }}"><i class="fa fa-book"></i> Add New </a></li>
             </ul>
             <ul class="right">
-              <li> <a href="{{ url_for('site.create_account') }}"><i class="fa fa-user"></i> sign up</a> </li> 
-                {% if not session.logged_in %}
-                <li> <a href="{{ url_for('site.login_page') }}"><i class="fa fa-user"></i> log In</a> </li> 
+              
+                {% if user in session  %}
+                <li> <i class="fa fa-user"></i> {{ name }}</a> </li> 
+                <li> <a href="{{ url_for('site.logout_page') }}"><i class="fa fa-envelope"></i> log out</a> </li>
                 {% else %}
-                <li> <a href="{{ url_for('logout') }}"><i class="fa fa-envelope"></i> log out</a> </li>
+                <li> <a href="{{ url_for('site.create_account') }}"><i class="fa fa-user"></i> sign up</a> </li> 
+                <li> <a href="{{ url_for('site.login_page') }}"><i class="fa fa-user"></i> log In</a> </li> 
                 {% endif %}
             </ul>
             

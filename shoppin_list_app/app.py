@@ -15,12 +15,14 @@ site = Blueprint('site', __name__)
 @site.route('/')
 def home_page():
     '''list every item on the dictonary'''
-
-    name = session.get('user')
-
-    
-    shop_lists = current_app.store.get_all_slist()
-    return render_template('home.html', shop_lists=sorted(shop_lists.items()))
+    if 'user' in session:
+        name = session.get('user')
+      
+       
+        shop_lists = current_app.store.get_all_slist()
+        return render_template('home.html', shop_lists=sorted(shop_lists.items()), name=name)
+    else:
+        return redirect(url_for('site.create_account'))
 
 @site.route('/app/<int:slist_id>')
 def product_page(slist_id):
@@ -58,16 +60,16 @@ def slist_add_page():
                 # add the instance to the dictonary
                 current_app.store.add_slist(slist)
 
-                return redirect(url_for('site.product_page', slist_id=slist.id))
+                return redirect(url_for('site.product_page', slist_id=slist._id))
 
             form = request.form
         return render_template('add_shopping_list.html', form=form)
     else:
         flash('please sign in first to add list')
-    return redirect(url_for('site.login_page'))
+    return redirect(url_for('site.create_account'))
 
 @site.route('/app/<int:slist_id>/edit', methods=['GET', 'POST'])
-# @login_required
+
 def slist_edit_page(slist_id):
     '''get the id of the list and load it i a form to update it'''
 
@@ -103,6 +105,33 @@ def slist_delete_page(slist_id):
     flash("list deleted")
 
     return redirect(url_for('site.home_page'))
+
+@site.route('/app/<int:slist_id>/add-list')
+def add_items_page(slist_id):
+    if 'user' in session:
+
+        if request.method == 'GET':
+            form = {'title': ''}
+
+        else:
+            # validate the data in the forms
+            valid = validate_data(request.form)
+
+            if valid:
+                item = request.form.data['title']
+                # assign a variable to class instance
+                slist = ShoppingList(item)
+                # add the instance to the dictonary
+                current_app.store.add_list_item(slist)
+
+                return redirect(url_for('site.product_page', slist_id=slist._id))
+
+            form = request.form
+        return render_template('add_item.html', form=form)
+    else:
+        flash('please sign in first to add list')
+    return redirect(url_for('site.login_page'))
+
 
 @site.route('/signup', methods=['GET', 'POST'])
 def create_account():
@@ -143,7 +172,7 @@ def login_page():
 
         return redirect(next_page)
 
-    flash('Invalid credentials.')
+  
 
     return render_template('sign-in.html', form=form)
 

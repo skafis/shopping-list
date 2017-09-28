@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/skafis/shopping-list.svg?branch=develop)](https://travis-ci.org/skafis/shopping-list)
+
 # Shopping app
 
 this is flask implementation of the shopping list app that enables user to add shopping

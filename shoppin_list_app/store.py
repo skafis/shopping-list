@@ -1,10 +1,17 @@
-class Store:
+'''
+This is the method files for the Shopping list class
+'''
+class Store():
+    '''
+    Mehods for shopping list mannipulation
+    '''
     def __init__(self):
         self.shopping_list = {}
         self.last_slist_id = 0
         self.item_list = []
 
     def add_slist(self, slist):
+        ''''''
         self.last_slist_id += 1
         self.shopping_list[self.last_slist_id] = slist
         print(type(slist))

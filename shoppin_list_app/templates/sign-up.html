@@ -31,7 +31,9 @@
                             {{ form.confirm }}
                             </label>
                     </form>
-                    <input class="login-box-submit-button" type="submit" name="signup_submit" value="Sign me up" /> 
+                    <input class="login-box-submit-button" type="submit" name="signup_submit" value="Sign me up" />
+
+                    <p class="text-center font-color"><a href="{{ url_for('site.create_account') }}">Sign In Instead</a></p>
              
                 </div>
             </form>
