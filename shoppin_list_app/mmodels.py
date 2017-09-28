@@ -92,9 +92,6 @@ class ShoppingList(object):
     
     def add_list(self, title):
         self.shopping_list[self.id] = title
-        
-
-
 
     @classmethod
     def find_by_id(cls, id):

@@ -5,5 +5,9 @@ python:
  -3.5
  -3.6
 install:
- - pip install unittest2
+ - pip install unittest
+
+ branches:
+  only:
+    -develop
 script: test_app.py

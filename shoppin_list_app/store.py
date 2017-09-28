@@ -2,6 +2,7 @@ class Store:
     def __init__(self):
         self.shopping_list = {}
         self.last_slist_id = 0
+        self.item_list = []
 
     def add_slist(self, slist):
         self.last_slist_id += 1
@@ -20,3 +21,6 @@ class Store:
 
     def get_all_slist(self):
         return self.shopping_list
+
+    def add_list_item(self, item):
+        self.item_list.append(item)

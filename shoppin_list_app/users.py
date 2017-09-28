@@ -17,12 +17,12 @@ class User(UserMixin):
     def is_active(self):
         return self.active
 
-    
+
     def create_accounts(self, username, password):
         self.accounts_db[username] = password
-        print (self.accounts_db.keys())
+       
         return self
-        
+            
     def check_user(self, username):
         if username in self.accounts_db.keys():
             return True
