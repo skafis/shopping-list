@@ -17,16 +17,16 @@
         <div class="nav-mobile">
             <ul class="left">
                 <li><a href="{{ url_for('site.home_page') }}"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="{{ url_for('site.slist_add_page') }}"><i class="fa fa-book"></i> Add New </a></li>
+                <li><a href="{{ url_for('site.slist_add_page') }}"><i class="fa fa-plus-square"></i> Add New </a></li>
             </ul>
             <ul class="right">
               
                 {% if 'user' in session  %}
-                <li> <a href="#"><i class="fa fa-envelope"></i> {{ session.get('user') }}</a> </li>
-                <li> <a href="{{ url_for('site.logout_page') }}"><i class="fa fa-envelope"></i> log out</a> </li>
+                <li> <a href="#"><i class="fa fa-user-circle"></i> {{ session.get('user') }}</a> </li>
+                <li> <a href="{{ url_for('site.logout_page') }}"><i class="fa fa-sign-out"></i> Sign out</a> </li>
                 {% else %}
-                <li> <a href="{{ url_for('site.create_account') }}"><i class="fa fa-user"></i> sign up</a> </li> 
-                <li> <a href="{{ url_for('site.login_page') }}"><i class="fa fa-user"></i> log In</a> </li> 
+                <li> <a href="{{ url_for('site.create_account') }}"><i class="fa fa-sign-in"></i> Sign Up</a> </li> 
+                <li> <a href="{{ url_for('site.login_page') }}"><i class="fa fa-sign-in"></i>Sign In</a> </li> 
                 {% endif %}
             </ul>
             

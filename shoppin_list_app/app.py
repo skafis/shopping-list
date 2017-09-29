@@ -3,9 +3,9 @@ This file contains all the logic, routes and functonality of the app
 '''
 from flask import Blueprint, redirect, render_template, url_for, flash
 from flask import current_app, request, session
-from flask_login import login_user
 
 from models import ShoppingList
+
 from forms import LoginForm, SignUpForm
 from users import User
 site = Blueprint('site', __name__)
@@ -23,16 +23,9 @@ def home_page():
     if 'user' in session:
         name = session.get('user')
 
-        
-    # owner = current_app.store.get_list_owner()
-    # if name == owner:
     shop_lists = current_app.store.get_all_slist()
 
     return render_template('home.html', shop_lists=sorted(shop_lists.items()), name=name)
-    # else:
-    #     return redirect(url_for('site.create_account'))
-    # if user in session:
-    return render_template('home.html')
 
 @site.route('/app/<int:slist_id>')
 def product_page(slist_id):
@@ -69,7 +62,9 @@ def slist_add_page():
                 # assign a variable to class instance
                 slist = ShoppingList(title, name)
                 # add the instance to the dictonary
-                current_app.store.add_slist(slist,name)
+                current_app.store.add_slist(slist)
+
+                flash('new list added')
 
                 return redirect(url_for('site.product_page', slist_id=slist._id))
 
@@ -158,16 +153,16 @@ def create_account():
     form = SignUpForm(request.form)
 
     if form.validate_on_submit():
-        # user = User()
+       
         for user in user_db.keys():
             if user == form.username.data:
                 flash(u'a user already exists')
                 return redirect(url_for('site.create_account'))
 
-        # user.create_accounts(form.username.data, form.password.data)
+
         user_db[form.username.data] = User().create_accounts(form.username.data, form.password.data)
 
-        flash(u'Success! you are now a member', 'success')
+        flash(u'You have logged in succesfully', 'success')
         session['user'] = form.username.data
 
         return redirect(url_for('site.home_page'))
@@ -181,8 +176,8 @@ def login_page():
     '''
     form = LoginForm(request.form)
     if 'user' in session:
-            flash(u'you are already logged in!', 'info')
-            return redirect(url_for('site.home_page'))
+        flash(u'you are already logged in!', 'info')
+        return redirect(url_for('site.home_page'))
 
     if request.method == 'POST':
         if not form.validate():
@@ -210,7 +205,7 @@ def login_page():
 @site.route('/logout')
 def logout_page():
     '''
-    This method will handle the the user log 
+    This method will handle the the user log
     out funtionality
     '''
     if 'user' in session:
@@ -222,7 +217,7 @@ def logout_page():
 
 def validate_data(form):
     '''
-    this method validates the inputs for adding 
+    this method validates the inputs for adding
     list
     '''
 

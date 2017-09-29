@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 
-from app import site
+from shopping_list_app.app import site
 from store import Store
 from users import get_user
 

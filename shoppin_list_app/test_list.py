@@ -15,7 +15,6 @@ class ShoppingListTestcase(unittest.TestCase):
         '''
         self.list_db.add_slist('new list')
         check_db = self.list_db.get_all_slist()
-        print(check_db)
         self.assertIn('new list', self.list_db.get_all_slist())
 
 if __name__ == '__main__':
