@@ -2,10 +2,16 @@
 {% block body %}
 
     <section id="shopping-list">
-        
+            {% for message in get_flashed_messages() %}
+            <center>
+                    <div class=flash>{{ message }}</div>
+                    
+            </center>
+            {% endfor %}
         
         <h1 class="header">Shopping List</h1>
         <div class="row">
+               
             {% if shop_lists %}
             <div class="row small-up-1 medium-up-2 large-up-3">
                 {% for slist_id, items in shop_lists %}
@@ -24,7 +30,9 @@
                 </div>
                 {% endfor %}
             {% else %}
+            <center>
             <h3> There are no items, please add to view</h3>
+            </center>
         {% endif %}
             </div>
         </div>

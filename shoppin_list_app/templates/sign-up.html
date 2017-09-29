@@ -13,10 +13,26 @@
 <body>
     <section class="row">
         <div class="login-box">
+                {% for message in get_flashed_messages() %}
+                <center>
+                        <div class=flash>{{ message }}</div>
+                        
+                </center>
+                {% endfor %}
             <div class="row">
                  <form role="form" action="" method="post" name="" class="form-signin">
                     
                 <div class="login-box-form-section">
+                        {% for error in form.errors.items() %}
+                        <div class="alert" style="width: 400px; margin-left: auto; margin-right: auto;" >
+                            <center>
+                                    
+                                <p><strong>Error:</strong> {{ error }}
+                                   
+                            </center>
+                            
+                        </div>
+                        {% endfor %}
                     <h1 class="login-box-title">Sign up</h1>
                         {{ form.csrf_token }}
                         <label>username
@@ -33,7 +49,7 @@
                     </form>
                     <input class="login-box-submit-button" type="submit" name="signup_submit" value="Sign me up" />
 
-                    <p class="text-center font-color"><a href="{{ url_for('site.create_account') }}">Sign In Instead</a></p>
+                    <p class="text-center font-color"><a href="{{ url_for('site.login_page') }}">Sign In Instead</a></p>
              
                 </div>
             </form>

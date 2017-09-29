@@ -11,17 +11,18 @@
 
 <body>
     <section class="row">
+            
         <div class="login-box">
             <div class="row">
+                    {% for message in get_flashed_messages() %}
+                    <center>
+                            <div class=flash> Error: {{ message }}</div>
+                            
+                    </center>
+                    {% endfor %}
                 <div class="login-box-form-section">
                     <h1 class="login-box-title">Log in with you email account</h1>
-                    {% if error %}
-                        <div class="alert" style="width: 400px; margin-left: auto; margin-right: auto;" >
-                            <center>
-                                <p><strong>Error:</strong> {{ error }}
-                            </center>
-                        </div>
-                    {% endif %}
+                    
                     <form role="form" action="" method="post" name="login">
                         {{ form.csrf_token }}
                         <label>username

@@ -10,19 +10,29 @@ from forms import LoginForm, SignUpForm
 from users import User
 site = Blueprint('site', __name__)
 
-
+user_db = {}
 
 @site.route('/')
 def home_page():
     '''list every item on the dictonary'''
+
+    if 'user' not in session:
+        flash('you have to login first')
+        return redirect(url_for('site.login_page'))
+
     if 'user' in session:
         name = session.get('user')
-      
-       
-        shop_lists = current_app.store.get_all_slist()
-        return render_template('home.html', shop_lists=sorted(shop_lists.items()), name=name)
-    else:
-        return redirect(url_for('site.create_account'))
+
+        
+    # owner = current_app.store.get_list_owner()
+    # if name == owner:
+    shop_lists = current_app.store.get_all_slist()
+
+    return render_template('home.html', shop_lists=sorted(shop_lists.items()), name=name)
+    # else:
+    #     return redirect(url_for('site.create_account'))
+    # if user in session:
+    return render_template('home.html')
 
 @site.route('/app/<int:slist_id>')
 def product_page(slist_id):
@@ -45,6 +55,7 @@ def slist_add_page():
 
     '''
     if 'user' in session:
+        name = session.get('user')
 
         if request.method == 'GET':
             form = {'title': ''}
@@ -56,9 +67,9 @@ def slist_add_page():
             if valid:
                 title = request.form.data['title']
                 # assign a variable to class instance
-                slist = ShoppingList(title)
+                slist = ShoppingList(title, name)
                 # add the instance to the dictonary
-                current_app.store.add_slist(slist)
+                current_app.store.add_slist(slist,name)
 
                 return redirect(url_for('site.product_page', slist_id=slist._id))
 
@@ -66,7 +77,7 @@ def slist_add_page():
         return render_template('add_shopping_list.html', form=form)
     else:
         flash('please sign in first to add list')
-    return redirect(url_for('site.create_account'))
+        return redirect(url_for('site.create_account'))
 
 @site.route('/app/<int:slist_id>/edit', methods=['GET', 'POST'])
 
@@ -108,7 +119,9 @@ def slist_delete_page(slist_id):
 
 @site.route('/app/<int:slist_id>/add-list')
 def add_items_page(slist_id):
+
     if 'user' in session:
+        name = session.get('user')
 
         if request.method == 'GET':
             form = {'title': ''}
@@ -138,15 +151,27 @@ def create_account():
     """
     GET request displays sign-up form. POST request registers the current user
     """
+    if 'user' in session:
+        flash('you are already logged in!')
+        return redirect(url_for('site.home_page'))
+
     form = SignUpForm(request.form)
 
     if form.validate_on_submit():
-        user = User(form.username.data, form.password.data)
+        # user = User()
+        for user in user_db.keys():
+            if user == form.username.data:
+                flash(u'a user already exists')
+                return redirect(url_for('site.create_account'))
 
-        user.create_accounts(form.username.data, form.password.data)
+        # user.create_accounts(form.username.data, form.password.data)
+        user_db[form.username.data] = User().create_accounts(form.username.data, form.password.data)
+
+        flash(u'Success! you are now a member', 'success')
         session['user'] = form.username.data
 
-        return redirect(url_for('site.login_page'))
+        return redirect(url_for('site.home_page'))
+
     return render_template('sign-up.html', form=form)
 
 @site.route('/login', methods=['GET', 'POST'])
@@ -155,25 +180,31 @@ def login_page():
     This method will be responsible for handling the user loginfunction
     '''
     form = LoginForm(request.form)
+    if 'user' in session:
+            flash(u'you are already logged in!', 'info')
+            return redirect(url_for('site.home_page'))
 
-    if form.validate_on_submit():
+    if request.method == 'POST':
+        if not form.validate():
+            flash(u'Please check the errors below', 'warning')
 
-        user = str(form.username.data)
-        pas = str(form.password.data)
-        add_ = User()
+        username = form.username.data
+        password = form.password.data
 
-        if user in add_.accounts_db:
-            add_.verify_password(user, pas)
-            login_user(user)
+        if username not in user_db.values():
+            flash('user is not correct')
 
-            flash('You have logged in.')
+        for user in user_db.values():
+            flash('user is not correct')
+            if not user.verify_password(username, password):
+                flash('username or password is incorrect', 'warning')
+                return redirect(url_for('site.login_page'))
 
-        next_page = request.args.get('next', url_for('site.home_page'))
+            else:
+                flash(u'Success!! you are now logged in', 'success')
+                session['user'] = username
 
-        return redirect(next_page)
-
-  
-
+                return redirect(url_for('site.home_page'))
     return render_template('sign-in.html', form=form)
 
 @site.route('/logout')
@@ -182,10 +213,9 @@ def logout_page():
     This method will handle the the user log 
     out funtionality
     '''
-
-    #logout_user(user)
-
-    flash('You have logged out.')
+    if 'user' in session:
+        session.pop('user')
+        return redirect(url_for('site.login_page'))
 
     return redirect(url_for('site.home_page'))
 

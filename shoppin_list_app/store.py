@@ -9,13 +9,16 @@ class Store():
         self.shopping_list = {}
         self.last_slist_id = 0
         self.item_list = []
+        self.user_list = []
 
-    def add_slist(self, slist):
+    def add_slist(self, slist, owner):
         ''''''
+        
         self.last_slist_id += 1
         self.shopping_list[self.last_slist_id] = slist
-        print(type(slist))
+
         slist._id = self.last_slist_id
+        self.item_list.append(owner)
 
     def update_slist(self, slist):
         self.shopping_list[slist._id] = slist
@@ -28,6 +31,10 @@ class Store():
 
     def get_all_slist(self):
         return self.shopping_list
+
+    def get_list_owner(self):
+        return self.user_list
+
 
     def add_list_item(self, item):
         self.item_list.append(item)

@@ -8,10 +8,8 @@ class User(UserMixin):
         self.username = username
         self.password = password
         self.active = True
-        self.is_admin = False
 
-    def get_id(self):
-        return self.username
+        
 
     @property
     def is_active(self):
