@@ -28,7 +28,7 @@ lazy-object-proxy==1.2.1
 lockfile==0.12.2
 logilab-common==1.1.0
 lxml==3.5.0
-Mako==1.0.3
+Mako==1.2.2
 Markdown==2.6.6
 MarkupSafe==1.0
 mechanize==0.2.5
